@@ -1,0 +1,10 @@
+streamlit
+matplotlib
+seaborn
+numpy
+mplcyberpunk
+urlextract
+wordcloud
+pandas
+emoji
+datetime
