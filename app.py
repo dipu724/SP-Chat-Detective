@@ -27,7 +27,7 @@ if uploaded_file is not None:
 
         # Stats Area
         num_messages, words, num_media_messages, num_links = helper.fetch_stats(selected_user,df)
-        st.title("The Most Stat-tastic Stats")
+        st.title("The Most Stat-tastic😋 Stats")
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
