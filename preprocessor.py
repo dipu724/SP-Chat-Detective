@@ -34,7 +34,7 @@ def preprocess(data,key):
     # convert message_date type
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
-    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],regex=True)
+    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key])
 
 
     df.rename(columns={'message_date': 'date'}, inplace=True)
