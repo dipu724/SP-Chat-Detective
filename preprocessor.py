@@ -17,12 +17,8 @@ def preprocess(data,key):
         '24hr' : '%d/%m/%Y, %H:%M - ',
         'custom': ''
     }
-   def preprocess_time_string(time_str):
-        # Replace non-breaking space characters with regular spaces
-        return time_str.replace("\u202F", " ")
-
-    # Preprocess the time strings before splitting and converting to datetime
-    preprocessed_data = preprocess_time_string(data)
+ # Replace non-breaking space characters with regular spaces
+    data = data.replace("\u202F", " ")
 
     #messages = re.split(pattern, data)[1:]
     #dates = re.findall(pattern, data)
