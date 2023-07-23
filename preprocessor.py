@@ -6,7 +6,7 @@ from datetime import datetime
 def preprocess(data):
     #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
     # new edit line add 23-07-2023
-    split_formats = {
+    pattern = {
         '12hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s',
         '24hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s',
         'custom' : ''
@@ -20,8 +20,8 @@ def preprocess(data):
     #messages = re.split(pattern, data)[1:]
     #dates = re.findall(pattern, data)
     # new edit
-    messages = re.split(split_formats[key], data)[1:]
-    dates = re.findall(split_formats[key], data)
+    messages = re.split(pattern[key], data)[1:]
+    dates = re.findall(pattern[key], data)
 
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
