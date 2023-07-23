@@ -17,7 +17,7 @@ def preprocess(data,key):
         '24hr' : '%d/%m/%Y, %H:%M - ',
         'custom': ''
     }
- def preprocess_time_string(time_str):
+    def preprocess_time_string(time_str):
         # Replace non-breaking space characters with regular spaces
         return time_str.replace("\u202F", " ")
 
