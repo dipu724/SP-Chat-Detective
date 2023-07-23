@@ -17,6 +17,8 @@ def preprocess(data,key):
         '24hr' : '%d/%m/%Y, %H:%M - ',
         'custom': ''
     }
+    # Replace non-breaking space characters with regular spaces
+    data = data.replace("\u202F", " ")
 
     #messages = re.split(pattern, data)[1:]
     #dates = re.findall(pattern, data)
