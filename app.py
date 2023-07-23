@@ -13,7 +13,11 @@ uploaded_file = st.sidebar.file_uploader("Choose a file")
 if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
-    key = '12hr'
+     # Call preprocess function for both time formats ('12hr' and '24hr')
+    df_12hr = preprocessor.preprocess(data, '12hr')
+    df_24hr = preprocessor.preprocess(data, '24hr')
+    df = pd.concat([df_12hr, df_24hr])
+
     df = preprocessor.preprocess(data,key)
 
     # fetch unique users
