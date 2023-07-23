@@ -21,7 +21,7 @@ def preprocess(data):
     
 
  
-    message_pattern = '\[\d{1,2}/\d{1,2}/\d{4},\s\d{1,2}:\d{1,2}:\d{1,2}\s\w{2}\]'
+    message_pattern = r'\[\d{1,2}/\d{1,2}/\d{4},\s\d{1,2}:\d{1,2}:\d{1,2}\s\w{2}\]'
     messages = re.split(message_pattern, data)[1:]
     date_pattern = '\d{1,2}/\d{1,2}/\d{4},\s\d{1,2}:\d{1,2}:\d{1,2}\s\w{2}'
     dates = re.findall(date_pattern, data)
@@ -35,7 +35,7 @@ def preprocess(data):
     # convert message_date type
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
     
-    df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %I:%M:%S %p')
+    df['message_date'] = pd.to_datetime(df['message_date'], format='[%d/%m/%Y, %I:%M:%S %p]')
     
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
     #df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],errors='coerce')
