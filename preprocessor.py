@@ -5,7 +5,7 @@ from datetime import datetime
 
 def preprocess(data):
     #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
-    pattern = '^([0-9]+)(\/)([0-9]+)(\/)([0-9]+), ([0-9]+):([0-9]+)[ ]?(AM|PM|am|pm)? -'
+    pattern = /'\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s?(AM|PM|am|pm)?\s-\s'/gm
 
     messages = re.split(pattern, data)[1:]
     dates = re.findall(pattern, data)
