@@ -4,7 +4,7 @@ from datetime import datetime
 import numpy as np
 
 
-def preprocess(data):
+def preprocess(data,key):
     #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
     # new edit line add 23-07-2023
     pattern = {
