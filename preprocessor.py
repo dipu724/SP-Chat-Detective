@@ -3,9 +3,9 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 import preprocessor,helper
-from dateutil import parser
 
-def preprocess(data,key):
+
+def preprocess(data):
     pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
     # new edit line add 23-07-2023
     '''pattern = {
