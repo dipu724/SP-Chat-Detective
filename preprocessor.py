@@ -4,16 +4,30 @@ from datetime import datetime
 
 
 def preprocess(data):
-    pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
-    
+    #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
+    # new edit line add 23-07-2023
+    split_formats = {
+        '12hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s',
+        '24hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s',
+        'custom' : ''
+    }
+    datetime_formats = {
+        '12hr' : '%d/%m/%Y, %I:%M %p - ',
+        '24hr' : '%d/%m/%Y, %H:%M - ',
+        'custom': ''
+    }
 
-    messages = re.split(pattern, data)[1:]
-    dates = re.findall(pattern, data)
+    #messages = re.split(pattern, data)[1:]
+    #dates = re.findall(pattern, data)
+    # new edit
+    messages = re.split(split_formats[key], data)[1:]
+    dates = re.findall(split_formats[key], data)
 
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
-    df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
+    #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
+    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key])
 
 
     df.rename(columns={'message_date': 'date'}, inplace=True)
