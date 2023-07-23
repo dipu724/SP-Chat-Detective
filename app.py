@@ -13,7 +13,7 @@ uploaded_file = st.sidebar.file_uploader("Choose a file")
 if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
-    df = preprocessor.preprocess(data)
+    df = preprocessor.preprocess(data,key)
 
     # fetch unique users
     user_list = df['user'].unique().tolist()
