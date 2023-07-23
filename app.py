@@ -20,7 +20,7 @@ if uploaded_file is not None:
     user_list = df['user'].unique().tolist()
     try:
           user_list.remove('notification')
-     except:
+    except:
           pass
     #user_list.remove('group_notification')
     user_list.sort()
