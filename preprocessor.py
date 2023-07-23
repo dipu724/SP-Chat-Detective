@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 import preprocessor,helper
+from dateutil import parser
 
 def preprocess(data,key):
     #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
@@ -29,7 +30,10 @@ def preprocess(data,key):
     # new edit
     messages = re.split(pattern[key], data)[1:]
     dates = re.findall(pattern[key], data)
-
+    
+    # Use dateutil.parser.parse to handle non-breaking space characters
+    parsed_dates = [parser.parse(date, fuzzy=True) for date in dates]
+    
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
