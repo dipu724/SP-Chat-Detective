@@ -14,9 +14,19 @@ if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
      # Call preprocess function for both time formats ('12hr' and '24hr')
-    df_12hr = preprocessor.preprocess(data, '12hr')
-    df_24hr = preprocessor.preprocess(data, '24hr')
-    df = pd.concat([df_12hr, df_24hr])
+   # Define a list of time formats ('12hr' and '24hr')
+    time_formats = ['12hr', '24hr']
+
+    # Initialize an empty list to store DataFrames for each format
+    dfs = []
+
+    # Call preprocess function for each time format and store the DataFrames
+    for key in time_formats:
+        df = preprocessor.preprocess(data, key)
+        dfs.append(df)
+
+    # Combine the DataFrames from all time formats
+    df = pd.concat(dfs)
 
     df = preprocessor.preprocess(data,key)
 
