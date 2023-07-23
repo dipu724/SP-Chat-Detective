@@ -18,27 +18,24 @@ def preprocess(data,key):
         '24hr' : '%d/%m/%Y, %H:%M - ',
         'custom': ''
     }
-    def preprocess_time_string(time_str):
-        # Replace non-breaking space characters with regular spaces
-        return time_str.replace("\u202F", " ")
+    
 
-    # Preprocess the time strings before splitting and converting to datetime
-    preprocessed_data = preprocess_time_string(data)
-
+   # Preprocess the time strings to remove non-breaking space characters
+    preprocessed_data = data.replace("\u202F", " ")
+    
     #messages = re.split(pattern, data)[1:]
     #dates = re.findall(pattern, data)
     # new edit
     messages = re.split(pattern[key], data)[1:]
     dates = re.findall(pattern[key], data)
     
-    # Use dateutil.parser.parse to handle non-breaking space characters
-    parsed_dates = [parser.parse(date, fuzzy=True) for date in dates]
+   
     
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
-    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key])
+    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],errors='coerce')
 
 
     df.rename(columns={'message_date': 'date'}, inplace=True)
