@@ -6,9 +6,9 @@ import preprocessor,helper
 from dateutil import parser
 
 def preprocess(data,key):
-    #pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
+    pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
     # new edit line add 23-07-2023
-    pattern = {
+    '''pattern = {
         '12hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s',
         '24hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s',
         'custom' : ''
@@ -17,25 +17,25 @@ def preprocess(data,key):
         '12hr' : '%d/%m/%Y, %I:%M %p - ',
         '24hr' : '%d/%m/%Y, %H:%M - ',
         'custom': ''
-    }
+    }'''
     
 
    # Preprocess the time strings to remove non-breaking space characters
-    preprocessed_data = data.replace("\u202F", " ")
+   # preprocessed_data = data.replace("\u202F", " ")
     
-    #messages = re.split(pattern, data)[1:]
-    #dates = re.findall(pattern, data)
+    messages = re.split(pattern, data)[1:]
+    dates = re.findall(pattern, data)
     # new edit
-    messages = re.split(pattern[key], data)[1:]
-    dates = re.findall(pattern[key], data)
+    #messages = re.split(pattern[key], data)[1:]
+   # dates = re.findall(pattern[key], data)
     
    
     
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
     # convert message_date type
-    #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
+    df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
     #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
-    df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],errors='coerce')
+    #df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],errors='coerce')
 
 
     df.rename(columns={'message_date': 'date'}, inplace=True)
