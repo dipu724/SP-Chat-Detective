@@ -5,7 +5,7 @@ import matplotlib as mpl
 import seaborn as sns
 import numpy as np
 import mplcyberpunk
-
+import pandas as pd
 
 st.sidebar.title("SP Chat Detective: Uncovering the Secrets of Your WhatsApp Conversations")
 
