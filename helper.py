@@ -3,7 +3,7 @@ from wordcloud import WordCloud
 import pandas as pd
 from collections import Counter
 import emoji
-
+import re
 
 extract = URLExtract()
 
@@ -21,7 +21,10 @@ def fetch_stats(selected_user,df):
         words.extend(message.split())
 
     # fetch number of media messages
-    num_media_messages = df[df['message'] == '<Media omitted>\n'].shape[0]
+    #num_media_messages = df[df['message'] == '<Media omitted>\n'].shape[0]
+     # fetch number of media messages
+    media_messages_condition = df['message'].str.contains('<Media omitted>', case=False, na=False)
+    num_media_messages = df[media_messages_condition].shape[0]
 
     # fetch number of links shared
     links = []
@@ -47,10 +50,12 @@ def create_wordcloud(selected_user,df):
     temp = df[df['user'] != 'group_notification']
     temp = temp[temp['message'] != '<Media omitted>\n']
 
+    
+
     def remove_stop_words(message):
         y = []
         for word in message.lower().split():
-            if word not in stop_words:
+            if word not in stop_words and word != "<media" and word != "omitted>":
                 y.append(word)
         return " ".join(y)
 
@@ -70,11 +75,13 @@ def most_common_words(selected_user,df):
     temp = df[df['user'] != 'group_notification']
     temp = temp[temp['message'] != '<Media omitted>\n']
 
+    
+
     words = []
 
     for message in temp['message']:
         for word in message.lower().split():
-            if word not in stop_words:
+            if word not in stop_words and word != "<media" and word != "omitted>":
                 words.append(word)
 
     most_common_df = pd.DataFrame(Counter(words).most_common(20))
@@ -92,11 +99,10 @@ def emoji_helper(selected_user,df):
         #emojis.extend([c for c in message if c in emoji.EMOJI_DATA_ENGLISH.values()])
         #emojis.extend([c for c in message if c in emoji.EMOJI_UNICODE.values()])
         emojis.extend([c for c in message if c in emoji.EMOJI_DATA])
+    
 
-
-
-    emoji_df = pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
-
+    #emoji_df = pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
+    emoji_df = pd.DataFrame(Counter(emojis).most_common(), columns=['emoji', 'count'])
     return emoji_df
 
 def monthly_timeline(selected_user,df):

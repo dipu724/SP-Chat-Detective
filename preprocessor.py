@@ -1,45 +1,34 @@
+# FINAL UPDATE 10-08-23
 import re
 import pandas as pd
 from datetime import datetime
-import numpy as np
-import preprocessor,helper
-
 
 def preprocess(data):
-    pattern = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s-\s'
-    # new edit line add 23-07-2023
-    '''pattern = {
-        '12hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s',
-        '24hr' : '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s',
-        'custom' : ''
-    }
-    datetime_formats = {
-        '12hr' : '%d/%m/%Y, %I:%M %p - ',
-        '24hr' : '%d/%m/%Y, %H:%M - ',
-        'custom': ''
-    }'''
-    
+    messages = []
+    dates = []
+    lines = data.strip().split("\n")
+    for line in lines:
+        try:
+            # Try to parse using 12-hour format first
+            pattern_12hr = re.search(r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]', line)
+            if pattern_12hr:
+                date = datetime.strptime(pattern_12hr.group(0), '%d/%m/%y, %I:%M %p')
+                message = re.sub(r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APap][mM]\s-\s', '', line)
+            else:
+                # If 12-hour format parsing fails, try 24-hour format
+                pattern_24hr = re.search(r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s', line)
+                date = datetime.strptime(pattern_24hr.group(0), '%d/%m/%y, %H:%M - ')
+                message = re.sub(r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s', '', line)
+            
+            messages.append(message)
+            dates.append(date)
+        except (ValueError, AttributeError):
+            # If date parsing fails or the pattern is not found, ignore the line
+            continue
 
- 
-    
-    messages = re.split(pattern, data)[1:]
-    
-    dates = re.findall(pattern, data)
-    # new edit
-    #messages = re.split(pattern[key], data)[1:]
-   # dates = re.findall(pattern[key], data)
-    
-   
-    
     df = pd.DataFrame({'user_message': messages, 'message_date': dates})
-    # convert message_date type
-    df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
-    
-    #df['message_date'] = pd.to_datetime(df['message_date'], format='[%d/%m/%Y, %I:%M:%S %p]')
-    
-    #df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%Y, %H:%M - ', errors='coerce')
-    #df['message_date'] = pd.to_datetime(df['message_date'], format=datetime_formats[key],errors='coerce')
 
+    df['message_date'] = pd.to_datetime(df['message_date'])
 
     df.rename(columns={'message_date': 'date'}, inplace=True)
 
